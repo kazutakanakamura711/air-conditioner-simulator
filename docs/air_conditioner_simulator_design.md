@@ -404,15 +404,15 @@ app/
 
 components/
   simulator/
-    SimulatorForm.tsx            入力フォーム全体
-    ModelInput.tsx               モデルA/Bの入力カード
-    CitySelect.tsx               都市選択
-    MonthSelector.tsx            使用月チェックボックス
-    TimeRangePicker.tsx          使用時間選択（平日・休日）
+    simulator-form.tsx           入力フォーム全体
+    model-input.tsx              モデルA/Bの入力カード
+    city-select.tsx              都市選択
+    month-selector.tsx           使用月チェックボックス
+    time-range-picker.tsx        使用時間選択（平日・休日）
   result/
-    ResultCards.tsx              サマリーカード（年間電気代など）
-    CumulativeChart.tsx          累積コストグラフ（折れ線）
-    MonthlyChart.tsx             月別電気代グラフ（棒グラフ）
+    result-cards.tsx             サマリーカード（年間電気代など）
+    cumulative-chart.tsx         累積コストグラフ（折れ線）
+    monthly-chart.tsx            月別電気代グラフ（棒グラフ）
     ShareButton.tsx              共有ボタン＋URLコピー
 
 lib/
