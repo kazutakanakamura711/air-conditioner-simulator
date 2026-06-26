@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# air-conditioner-simulator
 
-## Getting Started
+エアコンの安価モデルと省エネモデルを比較し、年間電気代と累積コストを可視化するシミュレーターです。
 
-First, run the development server:
+## 主な機能
+
+- 2モデルの本体価格 / APF / 冷房能力を入力して比較
+- 都市ごとの平均気温データを使って月別電気代を推定
+- 平日・休日それぞれの1日あたり使用時間を指定
+- 累積コスト比較（折れ線）と月別電気代比較（棒グラフ）を表示
+- 損益分岐年の目安を表示
+
+## 技術スタック
+
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Recharts
+- pnpm
+- Docker / Docker Compose
+
+## 必要環境
+
+- Node.js 24系（推奨）
+- pnpm
+- Docker Desktop（Docker利用時）
+
+## セットアップ
+
+1. 依存関係をインストール
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. 必要なら環境変数を用意
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`.env.local` がなくても Docker 起動自体は可能ですが、将来のAPI実装時は作成を推奨します。
 
-## Learn More
+## ローカル起動（pnpm）
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+ブラウザで http://localhost:3000 を開いてください。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Docker起動
 
-## Deploy on Vercel
+```bash
+docker compose up --build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+停止:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+docker compose down
+```
+
+依存関係やキャッシュを含めて再作成したい場合:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
+## 品質チェック
+
+```bash
+pnpm build
+pnpm lint
+```
+
+## ディレクトリ構成（主要）
+
+```text
+app/
+	page.tsx
+	layout.tsx
+components/
+	simulator/
+	result/
+lib/
+	calc.ts
+	cityData.ts
+types/
+	simulation.ts
+docs/
+	air_conditioner_simulator_design.md
+```
+
+## トラブルシュート
+
+### Module not found: Can't resolve 'recharts'
+
+依存が古いコンテナボリュームに残っている可能性があります。以下を実行して再作成してください。
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
+ローカル実行時は `pnpm install` を再実行してから `pnpm dev` を試してください。
