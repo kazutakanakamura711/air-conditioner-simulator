@@ -16,6 +16,7 @@
 - TypeScript
 - Tailwind CSS
 - Recharts
+- Supabase (PostgreSQL)
 - pnpm
 - Docker / Docker Compose
 
@@ -39,7 +40,35 @@ pnpm install
 cp .env.example .env.local
 ```
 
-`.env.local` がなくても Docker 起動自体は可能ですが、将来のAPI実装時は作成を推奨します。
+`.env.local` がなくても Docker 起動自体は可能ですが、APIを使う場合は Supabase の接続情報が必要です。
+
+## Phase 2: Supabase APIセットアップ
+
+1. `.env.local` に Supabase 環境変数を設定
+
+```bash
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+2. Supabase 側で `simulations` テーブルを作成
+
+```sql
+CREATE TABLE simulations (
+	id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+	params      JSONB NOT NULL,
+	created_at  TIMESTAMP WITH TIME ZONE DEFAULT now(),
+	expires_at  TIMESTAMP WITH TIME ZONE DEFAULT now() + INTERVAL '30 days'
+);
+
+CREATE INDEX idx_simulations_expires_at ON simulations (expires_at);
+```
+
+実装済みAPI:
+
+- `POST /api/simulations`
+- `GET /api/simulations/[id]`
 
 ## ローカル起動（pnpm）
 
@@ -87,6 +116,8 @@ components/
 lib/
 	calc.ts
 	cityData.ts
+	supabase-server.ts
+	api.ts
 types/
 	simulation.ts
 docs/
