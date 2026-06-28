@@ -1,5 +1,7 @@
 "use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
 import type { ModelParams } from "@/types/simulation";
 
 type ModelInputProps = {
@@ -34,14 +36,12 @@ function SliderRow({
           {unit}
         </span>
       </div>
-      <input
-        type="range"
-        className="w-full accent-emerald-400"
+      <Slider
         min={min}
         max={max}
         step={step}
-        value={value}
-        onChange={(event) => onChange(Number(event.target.value))}
+        value={[value]}
+        onValueChange={(next) => onChange(next[0] ?? min)}
       />
     </div>
   );
@@ -49,9 +49,11 @@ function SliderRow({
 
 export function ModelInput({ title, model, onChange }: ModelInputProps) {
   return (
-    <section className="rounded-2xl border border-white/10 bg-slate-900/70 p-4 shadow-lg backdrop-blur">
-      <h3 className="text-lg font-semibold text-white">{title}</h3>
-      <div className="mt-4 space-y-3">
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
         <SliderRow
           label="冷房 APF"
           value={model.coolingApf}
@@ -79,7 +81,7 @@ export function ModelInput({ title, model, onChange }: ModelInputProps) {
           unit="kW"
           onChange={(coolingKw) => onChange({ ...model, coolingKw })}
         />
-      </div>
-    </section>
+      </CardContent>
+    </Card>
   );
 }

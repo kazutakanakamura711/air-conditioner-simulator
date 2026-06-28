@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { monthLabels } from "@/lib/cityData";
 
 type MonthSelectorProps = {
@@ -26,18 +27,20 @@ export function MonthSelector({ value, onChange }: MonthSelectorProps) {
           const checked = value.includes(month);
 
           return (
-            <button
+            <Button
               key={label}
               type="button"
               onClick={() => toggle(month)}
-              className={`rounded-lg border px-2 py-1 text-sm transition ${
+              variant={checked ? "default" : "outline"}
+              size="sm"
+              className={`h-8 px-2 text-sm ${
                 checked
-                  ? "border-emerald-300 bg-emerald-400/20 text-emerald-200"
-                  : "border-white/10 bg-slate-900/60 text-slate-300 hover:border-white/20"
+                  ? "bg-emerald-500/20 text-emerald-200 hover:bg-emerald-500/30"
+                  : "text-slate-300"
               }`}
             >
               {label}
-            </button>
+            </Button>
           );
         })}
       </div>

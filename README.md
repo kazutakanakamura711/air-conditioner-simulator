@@ -15,6 +15,7 @@
 - Next.js (App Router)
 - TypeScript
 - Tailwind CSS
+- shadcn/ui
 - Recharts
 - Supabase (PostgreSQL)
 - pnpm
@@ -104,6 +105,64 @@ pnpm build
 pnpm lint
 ```
 
+## テスト
+
+単体テストは Jest、E2E は Playwright を使用します。
+
+```bash
+pnpm test
+pnpm test:unit
+pnpm test:e2e
+```
+
+Playwright のブラウザが未インストールの場合は、最初に以下を実行してください。
+
+```bash
+pnpm exec playwright install chromium
+```
+
+### 確認済みの E2E
+
+以下のシナリオは Playwright で確認済みです。
+
+- ホーム画面にシミュレーターの見出しと共有ボタンが表示される
+- ホーム画面で結果サマリーカードが表示される
+- 入力値を変更してグラフタブを切り替えられる
+
+### スクリーンショット
+
+ローカル起動した画面のスクリーンショットをプロジェクト内に保存しています。
+
+- [docs/screenshots/aircon-home.png](/Users/kazutakanakamura/dev/personal/products/air-conditioner-simulator/docs/screenshots/aircon-home.png)
+
+## Playwright MCP
+
+GitHub Copilot からブラウザ操作や E2E テスト生成を行いたい場合は Playwright MCP を利用できます。
+
+最初に VS Code 用の MCP 設定ファイルとして `.vscode/mcp.json` を配置しています。
+
+ブラウザバイナリが未インストールの場合は以下を実行してください。
+
+```bash
+pnpm exec playwright install chromium
+```
+
+VS Code を再起動後、Copilot Chat の Agent Mode で以下のように指示できます。
+
+```text
+Playwright MCPを使って http://localhost:3000 を開いて、
+画面を確認しながら E2E テストコードを生成して
+```
+
+```text
+Playwright MCPを使って http://localhost:3000 を開いて、
+共有URL作成ボタンの動作を確認して
+```
+
+詳細な設定手順は以下を参照してください。
+
+- `docs/PLAYWRITE_MCP_GITHUB_COPILOT.md`
+
 ## ディレクトリ構成（主要）
 
 ```text
@@ -136,3 +195,5 @@ docker compose up --build
 ```
 
 ローカル実行時は `pnpm install` を再実行してから `pnpm dev` を試してください。
+
+`new row violates row-level security policy ... (42501)` が出る場合は、`.env.local` の `SUPABASE_SERVICE_ROLE_KEY` が `service_role` ではなく `anon` になっている可能性が高いです。
