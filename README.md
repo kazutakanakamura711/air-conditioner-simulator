@@ -106,6 +106,7 @@ docker compose up --build
 
 - `next.config.ts` は `output: "standalone"` を有効にしています
 - 依存関係のインストールからビルド、本番起動までを Docker で完結します
+- `PORT` は Dockerfile で固定せず、Railway が注入する値を使います
 
 ### Railway 側の設定
 
