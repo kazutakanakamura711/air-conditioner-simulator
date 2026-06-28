@@ -42,7 +42,7 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
   return (
     <div className="h-[360px] w-full rounded-2xl border border-white/10 bg-slate-950/60 p-3">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+        <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.2)" />
           <XAxis
             dataKey="label"
@@ -50,12 +50,15 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
             fontSize={12}
             tickLine={false}
             axisLine={false}
+            tickMargin={8}
           />
           <YAxis
+            width={40}
             stroke="#94a3b8"
             fontSize={12}
             tickLine={false}
             axisLine={false}
+            tickMargin={8}
           />
           <Tooltip
             contentStyle={{

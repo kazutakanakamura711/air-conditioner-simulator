@@ -45,6 +45,7 @@
 ```
 air-conditioner-simulator/
   Dockerfile
+  Dockerfile.dev
   docker-compose.yml
   .dockerignore
   .env.local           ← Supabaseキーなど（gitignore対象）
@@ -57,13 +58,43 @@ air-conditioner-simulator/
 ### Dockerfile
 
 ```dockerfile
+FROM node:24.18.0-alpine AS deps
+RUN npm install -g pnpm
+WORKDIR /app
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
+
+FROM node:24.18.0-alpine AS builder
+RUN npm install -g pnpm
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN pnpm build
+
+FROM node:24.18.0-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+EXPOSE 3000
+CMD ["node", "server.js"]
+```
+
+### Dockerfile.dev
+
+```dockerfile
 FROM node:24.18.0-alpine
 
 RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
@@ -77,7 +108,9 @@ CMD ["pnpm", "dev"]
 ```yaml
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
     volumes:
@@ -102,7 +135,7 @@ docker compose down      # 停止
 
 ### 第一候補：Railway（Dockerデプロイ）
 
-GitHubリポジトリと連携し、Dockerfileを自動検出してデプロイ。
+GitHubリポジトリと連携し、`Dockerfile` を使ってデプロイ。
 コンテナをそのまま本番で動かすことができる。
 
 ```
@@ -464,7 +497,8 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ### Phase 4：仕上げ・公開
 
-- レスポンシブ対応
+- レスポンシブ対応の最終調整
+  - スマホ表示での余白・グラフ見切れを微調整
 - OGP設定（共有時のSNSプレビュー）
 - Railwayへのデプロイ（Docker）
 - うまくいかなければVercelへ切り替え

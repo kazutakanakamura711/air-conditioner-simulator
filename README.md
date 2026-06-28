@@ -98,6 +98,26 @@ docker compose down -v
 docker compose up --build
 ```
 
+## Railway 本番デプロイ
+
+本番環境では `Dockerfile` を使います。
+
+### 前提
+
+- `next.config.ts` は `output: "standalone"` を有効にしています
+- 依存関係のインストールからビルド、本番起動までを Docker で完結します
+
+### Railway 側の設定
+
+1. Railway で GitHub リポジトリを接続
+2. Dockerfile の指定を `Dockerfile` に設定
+3. 必要な環境変数を Railway の Variables に登録
+4. デプロイ後、`http://localhost:3000` 相当の公開URLで動作確認
+
+### 本番用 Dockerfile
+
+- [Dockerfile](/Users/kazutakanakamura/dev/personal/products/air-conditioner-simulator/Dockerfile)
+
 ## 品質チェック
 
 ```bash

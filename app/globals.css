@@ -4,6 +4,12 @@
   --background: #05070b;
   --foreground: #e8edf5;
   --card: #0b1220;
+  --font-body:
+    "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+    "Yu Gothic", "Meiryo", sans-serif;
+  --font-display:
+    "Barlow Condensed", "DIN Condensed", "Avenir Next Condensed",
+    "Arial Narrow", sans-serif;
 }
 
 @theme inline {
@@ -53,6 +59,6 @@ h1,
 h2,
 h3,
 .display-font {
-  font-family: var(--font-display), sans-serif;
+  font-family: var(--font-display);
   letter-spacing: 0.02em;
 }

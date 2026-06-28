@@ -41,19 +41,22 @@ export function CumulativeChart({ data }: CumulativeChartProps) {
   return (
     <div className="h-[360px] w-full rounded-2xl border border-white/10 bg-slate-950/60 p-3">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
+        <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
           <XAxis
             dataKey="label"
             stroke="#94a3b8"
             fontSize={12}
             tickLine={false}
             axisLine={false}
+            tickMargin={8}
           />
           <YAxis
+            width={40}
             stroke="#94a3b8"
             fontSize={12}
             tickLine={false}
             axisLine={false}
+            tickMargin={8}
             tickFormatter={(value) => `${Math.round(value / 10000)}万`}
           />
           <Tooltip
