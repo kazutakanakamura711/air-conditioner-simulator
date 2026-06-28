@@ -1,5 +1,7 @@
 "use client";
 
+import { Slider } from "@/components/ui/slider";
+
 type TimeRangePickerProps = {
   label: string;
   hours: number;
@@ -27,14 +29,12 @@ export function TimeRangePicker({
           <span>1日あたり</span>
           <span>{formatHours(hours)}</span>
         </div>
-        <input
-          type="range"
-          className="w-full accent-emerald-400"
+        <Slider
           min={0}
           max={24}
           step={0.5}
-          value={hours}
-          onChange={(event) => onChange(Number(event.target.value))}
+          value={[hours]}
+          onValueChange={(value) => onChange(value[0] ?? 0)}
         />
       </div>
     </div>

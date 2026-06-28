@@ -413,7 +413,7 @@ components/
     result-cards.tsx             サマリーカード（年間電気代など）
     cumulative-chart.tsx         累積コストグラフ（折れ線）
     monthly-chart.tsx            月別電気代グラフ（棒グラフ）
-    ShareButton.tsx              共有ボタン＋URLコピー
+    share-button.tsx             共有ボタン＋URLコピー
 
 lib/
   calc.ts                        計算ロジック（純粋関数）

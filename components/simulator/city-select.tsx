@@ -2,6 +2,13 @@
 
 import { cityData } from "@/lib/cityData";
 import type { CityKey } from "@/types/simulation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type CitySelectProps = {
   value: CityKey;
@@ -12,17 +19,18 @@ export function CitySelect({ value, onChange }: CitySelectProps) {
   return (
     <label className="block space-y-2">
       <span className="text-sm font-medium text-slate-300">使用都市</span>
-      <select
-        className="w-full rounded-xl border border-white/10 bg-slate-900 px-3 py-2 text-white outline-none transition focus:border-emerald-400"
-        value={value}
-        onChange={(event) => onChange(event.target.value as CityKey)}
-      >
-        {Object.entries(cityData).map(([key, city]) => (
-          <option key={key} value={key}>
-            {city.name}
-          </option>
-        ))}
-      </select>
+      <Select value={value} onValueChange={(next) => onChange(next as CityKey)}>
+        <SelectTrigger>
+          <SelectValue placeholder="都市を選択" />
+        </SelectTrigger>
+        <SelectContent>
+          {Object.entries(cityData).map(([key, city]) => (
+            <SelectItem key={key} value={key}>
+              {city.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </label>
   );
 }
