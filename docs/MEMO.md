@@ -15,7 +15,7 @@
 - エラー: `ERR_PNPM_IGNORED_BUILDS`（`sharp`, `unrs-resolver`）
 - 背景: pnpmのバージョン/設定差異でビルドスクリプトがブロックされた。
 - 対応:
-  - `Dockerfile` で pnpmを `pnpm@9` に固定。
+  - `Dockerfile` で pnpmを固定（現在は `pnpm@11.9.0`）。ローカルは `package.json` の `packageManager` で同じバージョンを指定。
   - `pnpm-workspace.yaml` に `packages` を定義（`- .`）。
   - 必要に応じて build script policy を調整。
 

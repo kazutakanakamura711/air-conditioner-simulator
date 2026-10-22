@@ -23,11 +23,19 @@
 
 ## 必要環境
 
-- Node.js 24系（推奨）
-- pnpm
+- Node.js 24.22.1以上の24系（`.nvmrc` は24.22.1）
+- pnpm 11.9.0（`packageManager` と Dockerfile で固定）
 - Docker Desktop（Docker利用時）
 
 ## セットアップ
+
+Node.jsをnvmで管理している場合は、最初に以下を実行してください。
+
+```bash
+nvm install
+nvm use
+corepack enable
+```
 
 1. 依存関係をインストール
 
@@ -81,8 +89,19 @@ pnpm dev
 
 ## Docker起動
 
+Node.jsや依存関係を更新した場合は、イメージを再ビルドしてコンテナを作り直してください。
+
 ```bash
-docker compose up --build
+docker compose build --pull app
+docker compose up --force-recreate --renew-anon-volumes app
+```
+
+`--renew-anon-volumes` で `node_modules` と `.next` の匿名ボリュームも更新します。
+
+コンテナ内のNode.jsバージョンを確認できます。
+
+```bash
+docker compose exec app node --version
 ```
 
 停止:
@@ -107,6 +126,7 @@ docker compose up --build
 - `next.config.ts` は `output: "standalone"` を有効にしています
 - 依存関係のインストールからビルド、本番起動までを Docker で完結します
 - `PORT` は Dockerfile で固定せず、Railway が注入する値を使います
+- Node.js更新時は、更新済みDockerfileから再ビルド・再デプロイし、本番コンテナで `node --version` を確認します。既存プロセスの再起動だけでは更新されません
 
 ### Railway 側の設定
 
@@ -125,6 +145,8 @@ docker compose up --build
 pnpm build
 pnpm lint
 ```
+
+2026年10月のセキュリティ更新と修正版公開待ちの開発依存については、[更新記録](docs/SECURITY_UPDATE_2026-10-22.md)を参照してください。
 
 ## テスト
 
