@@ -1,29 +1,14 @@
 import { simulate } from "@/lib/calc";
 import type { SimulationParams } from "@/types/simulation";
 
-function createParams(overrides?: Partial<SimulationParams>): SimulationParams {
+type SimulationParamOverrides = {
+  modelA?: Partial<SimulationParams["modelA"]>;
+  modelB?: Partial<SimulationParams["modelB"]>;
+  settings?: Partial<SimulationParams["settings"]>;
+};
+
+function createParams(overrides?: SimulationParamOverrides): SimulationParams {
   return {
-    modelA: {
-      price: 50000,
-      coolingApf: 4,
-      heatingApf: 4,
-      coolingKw: 2.2,
-    },
-    modelB: {
-      price: 70000,
-      coolingApf: 6,
-      heatingApf: 6,
-      coolingKw: 2.2,
-    },
-    settings: {
-      unitPrice: 31,
-      city: "tokyo",
-      activeMonths: [1, 2, 3, 6, 7, 8, 9, 12],
-      weekdayHours: 9,
-      weekendHours: 16,
-      years: 10,
-    },
-    ...overrides,
     modelA: {
       price: 50000,
       coolingApf: 4,
@@ -53,7 +38,7 @@ function createParams(overrides?: Partial<SimulationParams>): SimulationParams {
 describe("simulate", () => {
   it("returns monthly and cumulative data with expected lengths", () => {
     const result = simulate(
-      createParams({ settings: { years: 5 } as SimulationParams["settings"] }),
+      createParams({ settings: { years: 5 } }),
     );
 
     expect(result.monthlyCosts).toHaveLength(12);
@@ -68,7 +53,7 @@ describe("simulate", () => {
         settings: {
           activeMonths: [],
           years: 3,
-        } as SimulationParams["settings"],
+        },
       }),
     );
 
@@ -94,7 +79,7 @@ describe("simulate", () => {
           activeMonths: [1],
           weekdayHours: 99,
           weekendHours: -5,
-        } as SimulationParams["settings"],
+        },
       }),
     );
 
@@ -104,7 +89,7 @@ describe("simulate", () => {
           activeMonths: [1],
           weekdayHours: 24,
           weekendHours: 0,
-        } as SimulationParams["settings"],
+        },
       }),
     );
 
@@ -135,7 +120,7 @@ describe("simulate", () => {
           weekendHours: 16,
           unitPrice: 50,
           years: 15,
-        } as SimulationParams["settings"],
+        },
       }),
     );
 

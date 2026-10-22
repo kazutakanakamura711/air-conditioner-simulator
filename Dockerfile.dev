@@ -1,6 +1,6 @@
-FROM node:24.18.0-alpine
+FROM node:24.22.1-alpine
 
-RUN npm install -g pnpm@9
+RUN npm install -g pnpm@11.9.0
 
 WORKDIR /app
 
